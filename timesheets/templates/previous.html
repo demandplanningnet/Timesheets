@@ -1,0 +1,151 @@
+
+
+{% extends 'base2.html' %}
+
+{% block title %}
+Previous Entries
+{% endblock %}
+
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" rel="stylesheet">
+  <div class="container">
+    <title>Previous Entries</title>
+</head>
+<style>
+  #table-wrapper {
+    position: relative;
+  }
+
+  #table-scroll {
+    height: 475px;
+    overflow: auto;
+    margin-top: 20px;
+  }
+
+  #table-wrapper table {
+    width: 100%;
+  }
+</style>
+
+<body>
+  <!-- {% if user.is_authenticated %}
+    <p>Update</p>
+    {% endif %}
+<table>
+    <form method="get" action="">
+
+        <div class="container">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary" data-bs-toggle="button" autocomplete="off">Save</button>
+        
+    </div>
+    </form> -->
+
+
+  {% if user.is_authenticated %}
+  <br>
+  <br>
+  <div>
+    <input type="text" class="container" id="myInput" onkeyup="myFunction()" placeholder="Search Name"
+      title="Type in a name">
+    <br>
+    <p></p>
+    <input type="text" class="container" id="myInput1" onkeyup="myFunction()" placeholder="Search Week Start"
+      title="Type in a name">
+    <div id="table-wrapper">
+      <div id="table-scroll">
+        <table class="table table-hover" id="myTable">
+          <tr>
+            <th>Name</th>
+            <th>Billable</th>
+            <th>Date</th>
+            <th>Hours</th>
+            <th>Description</th>
+
+            <th>Client</th>
+            <th>Project</th>
+            <th>Category</th>
+            <th>Week Start</th>
+
+            <!-- <th> </th>
+            <th></th> -->
+          </tr>
+          {% for displayentry in updatentry %}
+          <tr>
+            <td id=name>{{displayentry.name}}</td>
+            <td>{{displayentry.billable}}</td>
+            <td>{{displayentry.date}}</td>
+            <td>{{displayentry.hours}}</td>
+            <td>{{displayentry.description}}</td>
+
+            <td>{{displayentry.client}}</td>
+            <td>{{displayentry.project}}</td>
+            <td>{{displayentry.category}}</td>
+            <td>{{displayentry.week_start}}</td>
+            <!-- <td><a href="/edit/{{displayentry.timesheetid}}">Edit</a></td>
+            <td><a href="/delete/{{displayentry.timesheetid}}">Delete</a></td> -->
+
+          </tr>
+          {% endfor %}
+        </table>
+      </div>
+    </div>
+
+    <form action="{% url 'addentry' %}">
+      <br>
+      <br>
+      <!-- <button type="submit" class="btn btn-outline-secondary">Add new</button>
+    </form>
+
+    <form action="{% url 'newentry' %}">
+        <br>
+        <br>
+        <button type="submit" class="btn btn-outline-secondary">Login</button>
+    </form> -->
+
+      <!-- <form action="{% url 'export-excel' %}">
+        <br>
+        <br>
+    <button >Export Excel</button> -->
+    </form>
+    {% endif %}
+  </div>
+
+
+</html>
+<script>
+  function myFunction() {
+    var input, filter, table, tr, td, i, txtValue;
+    input = document.getElementById("myInput");
+    input2 = document.getElementById("myInput1")
+    filter = input.value.toUpperCase();
+    filter1 = input2.value.toUpperCase()
+    table = document.getElementById("myTable");
+    tr = table.getElementsByTagName("tr");
+    for (i = 0; i < tr.length; i++) {
+      td = tr[i].getElementsByTagName("td")[0];
+      td1 = tr[i].getElementsByTagName("td")[8];
+      if (td && td1) {
+        txtValue = td.textContent || td.innerText;
+        txtValue1 = td1.textContent || td1.innerText
+        if (txtValue.toUpperCase().indexOf(filter) > -1 && txtValue1.toUpperCase().indexOf(filter1) > -1) {
+          tr[i].style.display = "";
+        } else {
+          tr[i].style.display = "none";
+        }
+      }
+    }
+  }
+</script>
+{% endblock %}

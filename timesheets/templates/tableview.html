@@ -1,0 +1,218 @@
+{% extends 'base2.html' %}
+
+{% block title %}
+Add Entries
+{% endblock %}
+
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js">
+  </script>
+  <title>Document</title>
+
+
+
+</head>
+
+
+<form method="POST" enctype="multipart/form-data" id="form-container">
+  <table class="table" id="myTable">
+
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Client</th>
+        <th>Project</th>
+        <th>Billable</th>
+        <th>Date</th>
+        <th>Description</th>
+        <th>Hours</th>
+        <th>Category</th>
+
+      </tr>
+    </thead>
+    <tbody>
+
+
+
+      <!-- Week Start Day    <input type="date" step="7"  min=2014-09-07 id = "datepicker" onchange="capture(this.value)"> -->
+      {% csrf_token %}
+      {{ formset.management_form }}
+      {% for form in formset %}
+      <div class="bird-form">
+
+        <tr>
+          <th>
+
+            {{ form.name }}
+          </th>
+          <th>
+            {{ form.client }}
+          </th>
+          <th>
+            {{ form.project }}
+          </th>
+          <th>
+            {{ form.billable }}
+          </th>
+          <th>
+            {{ form.date }}
+          </th>
+          <th>
+            {{ form.description }}
+          </th>
+          <th>
+            {{ form.hours }}
+          </th>
+          <th>
+            {{ form.category }}
+          </th>
+        </tr>
+
+    </tbody>
+    </div>
+    {% endfor %}
+  </table>
+
+
+  <input type="text" style="display:none" name="additems" id="additems" value='false' />
+  <button class="btn btn-primary" id="additemsbutton" onclick="Submit()">Add items</button>
+  </div>
+
+
+  <!--    
+ <div id="empty-form" >{{ formset.empty_form }}</div> -->
+  <!-- <button id="additems" class = "add_more" type="button">Add More</button> -->
+  <input type="submit" value="Submit" class="btn btn-primary" id="submit">
+  <!-- <button type="submit" id="submit" class="btn btn-primary" onclick="Submit()">Submit</button> -->
+
+</form>
+
+</div>
+<br>
+<br>
+<div id="table-wrapper">
+  <div id="table-scroll">
+    <table class="table table-hover" id="myTable">
+      <tr>
+        <th>Name</th>
+        <th>Billable</th>
+        <th>Date</th>
+        <th>Hours</th>
+        <th>Description</th>
+
+        <th>Client</th>
+        <th>Project</th>
+        <th>Category</th>
+        <th>Week Start</th>
+
+
+      </tr>
+      {% for displayentry in addEntry %}
+      <tr>
+        <td id=name>{{displayentry.name}}</td>
+        <td>{{displayentry.billable}}</td>
+        <td id="date">{{displayentry.date}}</td>
+        <td>{{displayentry.hours}}</td>
+        <td>{{displayentry.description}}</td>
+
+        <td>{{displayentry.client}}</td>
+        <td>{{displayentry.project}}</td>
+        <td>{{displayentry.category}}</td>
+        <td>{{displayentry.week_start}}</td>
+
+
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+</div>
+
+<!-- 
+<form method="post" enctype="multipart/form-data">
+    {{ formset.as_p }}
+    {% csrf_token %}
+    <button type="submit" >Save</button>
+</form> -->
+
+</html>
+{% endblock %}
+<script>
+
+
+  // let birdForm = document.querySelectorAll(".bird-form")
+  //         let container = document.querySelector("#form-container")
+  //         let addButton = document.querySelector("#add-form")
+  //         let totalForms = document.querySelector("#id_form-TOTAL_FORMS")
+
+  //         let formNum = birdForm.length-1
+  //         addButton.addEventListener('click', addForm)
+
+  //         function addForm(e){
+  //             e.preventDefault()
+
+  //             let newForm = birdForm[0].cloneNode(true)
+  //             let formRegex = RegExp(`form-(\\d){1}-`,'g')
+
+  //             formNum++
+  //             newForm.innerHTML = newForm.innerHTML.replace(formRegex, `form-${formNum}-`)
+  //             container.insertBefore(newForm, addButton)
+
+  //             totalForms.setAttribute('value', `${formNum+1}`)
+  //         }
+
+
+  $(document).ready(function () {
+    $("#additemsbutton").on('click', function (event) {
+      $("#additems").val("true");
+    });
+  })
+
+
+  var inputF = document.getElementById('additems')
+  function Submit() {
+
+    inputF.value = 'true';
+
+  }
+
+
+  function capture(val) {
+    // start_date = document.getElementById('datepicker').value;
+    // return start_date.getDate();
+    //val = document.getElementById('datepicker').value
+
+    // alert('The captured date is'+ val)
+    let dtElem = document.getElementById('date_id');
+    let start_date = new Date();
+    let minDate = new Date(val);
+    let maxDate = new Date();
+
+
+
+    maxDate.setDate(minDate.getDate() + 7);
+    dtElem.min = formatDate(minDate);
+    dtElem.max = formatDate(maxDate);
+
+    console.log(formatDate(minDate));
+    console.log(formatDate(maxDate));
+
+    function formatDate(date) {
+      let dd = String(date.getDate()).padStart(2, '0');
+      let mm = String(date.getMonth() + 1).padStart(2, '0');
+      let yyyy = date.getFullYear();
+      return `${yyyy}-${mm}-${dd}`;
+    }
+
+
+  }
+
+
+</script>
